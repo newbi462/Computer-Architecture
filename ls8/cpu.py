@@ -7,7 +7,26 @@ class CPU:
 
     def __init__(self):
         """Construct a new CPU."""
-        pass
+        #pass
+
+        #Registers
+        #self.registers = [0] * 8 # Registers | 8 general-purpose 8-bit numeric registers R0-R7.
+        self.reg = [0] * 8# exisisting code NOT IN SPEC DOC uses self.reg???
+        #R5 is reserved as the interrupt mask (IM)
+        #R6 is reserved as the interrupt status (IS)
+        #R7 is reserved as the stack pointer (SP)
+
+        #Internal Registers
+        self.pc = 0 #PC: Program Counter, address of the currently executing instruction
+        #IR: Instruction Register, contains a copy of the currently executing instruction
+        #MAR: Memory Address Register, holds the memory address we're reading or writing
+        #MDR: Memory Data Register, holds the value to write or the value just read
+        #FL: Flags, see below
+
+        #Memory
+        self.memory = [0] * 256 #Memory | The LS-8 has 8-bit addressing, so can address 256 bytes of RAM total.
+
+        #Stack
 
     def load(self):
         """Load a program into memory."""
