@@ -24,8 +24,8 @@ class CPU:
         #FL: Flags, see below
 
         #Memory
-        self.memory = [0] * 256 #Memory | The LS-8 has 8-bit addressing, so can address 256 bytes of RAM total.
-
+        #self.memory = [0] * 256 #Memory | The LS-8 has 8-bit addressing, so can address 256 bytes of RAM total.
+        self.ram = [0] * 256 #per line 49 ERROR name already defined but not given in spec
         #Stack
 
     def load(self):
@@ -79,16 +79,47 @@ class CPU:
 
         print()
 
+    def LDI(self):
+        register = self.ram_read(self.pc + 1)
+        value = self.ram_read(self.pc + 2)
+        self.reg[register] = value
+        self.pc += 3
+
+    def PRN(self):
+        register = self.ram_read(self.pc+1)
+        print(self.reg[register])
+        self.pc += 2
+
+    def HLT(self):
+        sys.exit(0)
+
     def run(self):
         """Run the CPU."""
-        pass
-
-     #should accept the address to read and return the value stored there.
-     def ram_read(self, address_to_read):
         #pass
-        return self.memory[address_to_read]
+        self.pc = 0
+        halted = False
+
+        while not halted:
+            #print(self.ram_read(self.pc))
+            if 0b10000010 == self.ram_read(self.pc):
+                self.LDI()
+            elif 0b01000111 == self.ram_read(self.pc):
+                self.PRN()
+            elif 0b00000001 == self.ram_read(self.pc):
+                self.HLT()
+            else:
+                print("you break it you buy it")
+                sys.exit(1)
+
+
+
+
+    #should accept the address to read and return the value stored there
+    def ram_read(self, address_to_read):
+        #pass
+        return self.ram[address_to_read]
 
     # should accept a value to write, and the address to write it to.
     def ram_write(self, value_to_write, address_to_write_it_to):
         #pass
-        self.memory[address_to_write_it_to] = value_to_write
+        self.ram[address_to_write_it_to] = value_to_write
