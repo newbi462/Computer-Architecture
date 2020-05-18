@@ -19,8 +19,8 @@ class CPU:
         #Internal Registers
         self.pc = 0 #PC: Program Counter, address of the currently executing instruction
         #IR: Instruction Register, contains a copy of the currently executing instruction
-        #MAR: Memory Address Register, holds the memory address we're reading or writing
-        #MDR: Memory Data Register, holds the value to write or the value just read
+        ##FROM STEP 2: You don't need to add the MAR or MDR to your CPU class #MAR: Memory Address Register, holds the memory address we're reading or writing
+        ##FROM STEP 2: You don't need to add the MAR or MDR to your CPU class #MDR: Memory Data Register, holds the value to write or the value just read
         #FL: Flags, see below
 
         #Memory
@@ -83,8 +83,12 @@ class CPU:
         """Run the CPU."""
         pass
 
-    def ram_read(self):
-        pass
+     #should accept the address to read and return the value stored there.
+     def ram_read(self, address_to_read):
+        #pass
+        return self.memory[address_to_read]
 
-    def ram_write(self):
-        pass
+    # should accept a value to write, and the address to write it to.
+    def ram_write(self, value_to_write, address_to_write_it_to):
+        #pass
+        self.memory[address_to_write_it_to] = value_to_write
