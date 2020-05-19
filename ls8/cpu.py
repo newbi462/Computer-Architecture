@@ -113,6 +113,12 @@ class CPU:
     def HLT(self):
         sys.exit(0)
 
+    def MUL(self):
+        register = self.ram_read(self.pc + 1)
+        register2 = self.ram_read(self.pc + 2)
+        self.reg[register] *= self.reg[register2]
+        self.pc += 3
+
     def run(self):
         """Run the CPU."""
         #pass
@@ -126,6 +132,8 @@ class CPU:
                 self.LDI()
             elif 0b01000111 == self.ram_read(self.pc):
                 self.PRN()
+            elif 0b10100010 == self.ram_read(self.pc):
+                self.MUL()
             elif 0b00000001 == self.ram_read(self.pc):
                 self.HLT()
             else:
