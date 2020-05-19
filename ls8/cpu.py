@@ -34,8 +34,12 @@ class CPU:
         address = 0
 
         # For now, we've just hardcoded a program:
+        ##make sure there is a file passed
+        if len(sys.argv) != 2:
+            print('PLEASE USE ls8.py path_to_file_to_run')
+            sys.exit(1)
 
-        program = [
+        """program = [
             # From print8.ls8
             0b10000010, # LDI R0,8
             0b00000000,
@@ -47,7 +51,23 @@ class CPU:
 
         for instruction in program:
             self.ram[address] = instruction
-            address += 1
+            address += 1"""
+        ## Reaplace with import logic
+        file_to_run = sys.argv[1]
+        try:
+            #pass
+            with open(file_to_run) as program:
+                #pass
+                for line in program:
+                    if line.split('#')[0].strip() == "":
+                        continue
+                    #print(int(line.split('#')[0].strip(), 2))
+                    self.ram[address] = int(line.split('#')[0].strip(), 2)
+                    address += 1
+        except FileNotFoundError:
+            #pass
+            print("it failed")
+            sys.exit(1)
 
 
     def alu(self, op, reg_a, reg_b):
@@ -96,6 +116,7 @@ class CPU:
     def run(self):
         """Run the CPU."""
         #pass
+        print(sys.argv)
         self.pc = 0
         halted = False
 
