@@ -2,6 +2,11 @@
 
 import sys
 
+LDI = 0b10000010
+PRN = 0b01000111
+MUL = 0b10100010
+HLT = 0b00000001
+
 class CPU:
     """Main CPU class."""
 
@@ -27,6 +32,13 @@ class CPU:
         #self.memory = [0] * 256 #Memory | The LS-8 has 8-bit addressing, so can address 256 bytes of RAM total.
         self.ram = [0] * 256 #per line 49 ERROR name already defined but not given in spec
         #Stack
+
+        #clean table
+        self.branchtable = {}
+        self.branchtable[LDI] = self.LDI
+        self.branchtable[PRN] = self.PRN
+        self.branchtable[MUL] = self.MUL
+        self.branchtable[HLT] = self.HLT
 
     def load(self):
         """Load a program into memory."""
@@ -128,14 +140,18 @@ class CPU:
 
         while not halted:
             #print(self.ram_read(self.pc))
-            if 0b10000010 == self.ram_read(self.pc):
+            """if 0b10000010 == self.ram_read(self.pc):
                 self.LDI()
             elif 0b01000111 == self.ram_read(self.pc):
                 self.PRN()
             elif 0b10100010 == self.ram_read(self.pc):
                 self.MUL()
             elif 0b00000001 == self.ram_read(self.pc):
-                self.HLT()
+                self.HLT()"""
+            ###MAKE CLEAN
+            option = self.ram_read(self.pc)# use var to get around try catchs
+            if option in self.branchtable:
+                self.branchtable[option]()
             else:
                 print("you break it you buy it")
                 sys.exit(1)
