@@ -6,6 +6,11 @@ LDI = 0b10000010
 PRN = 0b01000111
 MUL = 0b10100010
 HLT = 0b00000001
+PUSH = 0b01000101
+SP = 7
+POP = 0b01000110
+
+
 
 class CPU:
     """Main CPU class."""
@@ -39,6 +44,8 @@ class CPU:
         self.branchtable[PRN] = self.PRN
         self.branchtable[MUL] = self.MUL
         self.branchtable[HLT] = self.HLT
+        self.branchtable[PUSH] = self.PUSH
+        self.branchtable[POP] = self.POP
 
     def load(self):
         """Load a program into memory."""
@@ -130,6 +137,23 @@ class CPU:
         register2 = self.ram_read(self.pc + 2)
         self.reg[register] *= self.reg[register2]
         self.pc += 3
+
+    def PUSH(self):
+        self.reg[SP] -= 1
+        reg_num = self.ram_read(self.pc+1)
+        val = self.reg[reg_num]
+        top_of_stack_addr = self.reg[SP]
+        self.ram[top_of_stack_addr] = val
+        self.pc += 2
+
+    def POP(self):
+        #print("should pop")
+        # Copy the value from the address pointed to by SP to the given register.
+        reg_num = self.ram_read(self.pc+1)
+        self.reg[reg_num] = self.ram_read(self.reg[SP])
+        #Increment SP
+        self.reg[SP] += 1
+        self.pc += 2
 
     def run(self):
         """Run the CPU."""
